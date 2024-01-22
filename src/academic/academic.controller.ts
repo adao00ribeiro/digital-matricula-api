@@ -1,34 +1,58 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, HttpException, UseFilters } from '@nestjs/common';
 import { AcademicService } from './academic.service';
 import { CreateAcademicDto } from './dto/create-academic.dto';
 import { UpdateAcademicDto } from './dto/update-academic.dto';
 
+
 @Controller('academic')
 export class AcademicController {
-  constructor(private readonly academicService: AcademicService) {}
+  constructor(private readonly academicService: AcademicService) { }
 
   @Post()
-  create(@Body() createAcademicDto: CreateAcademicDto) {
-    return this.academicService.create(createAcademicDto);
+  async create(@Body() createAcademicDto: CreateAcademicDto) {
+    try {
+      return await this.academicService.create(createAcademicDto);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Get()
-  findAll() {
-    return this.academicService.findAll();
-  }
+  async findAll() {
+    try {
+      return await this.academicService.findAll();
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
 
+  }
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.academicService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+
+    try {
+      return await this.academicService.findOne(id);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAcademicDto: UpdateAcademicDto) {
-    return this.academicService.update(+id, updateAcademicDto);
+  async update(@Param('id') id: string, @Body() updateAcademicDto: UpdateAcademicDto) {
+
+    try {
+      return await this.academicService.update(id, updateAcademicDto);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.academicService.remove(+id);
+  async remove(@Param('id') id: string) {
+
+    try {
+      return await this.academicService.remove(id);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 }
