@@ -9,3 +9,39 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL_SQLITE")
 }
+
+model Academic {
+  id    String @id @default(uuid())
+  name  String
+  email String
+  phone String
+
+  city  String?
+  state String?
+  cep   String?
+
+  cpf       String    @unique()
+  birthdate DateTime?
+
+  document String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  courses Course[]
+
+  @@map("academics")
+}
+
+model Course {
+  id                   String    @id @default(uuid())
+  name                 String
+  modality             String
+  type                 String
+  investmentvalue      Float
+  numberofinstallments Int
+  academic             Academic? @relation(fields: [academicId], references: [id])
+  academicId           String?
+
+  @@map("courses")
+}
