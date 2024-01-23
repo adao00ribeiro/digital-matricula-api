@@ -7,12 +7,17 @@ export class Academic implements Prisma.AcademicUncheckedCreateInput {
     phone: string;
     city?: string;
     state?: string;
-    cep?: string;
+    cep: string;
     cpf: string;
-    birthdate?: string | Date;
-    document: string;
+    birthdate: string;
+
     createdAt?: string | Date;
     updatedAt?: string | Date;
+
+    Document?: Prisma.DocumentUncheckedCreateNestedManyWithoutAcademicInput;
+    enrolledCourses?: Prisma.EnrolledCourseUncheckedCreateNestedManyWithoutAcademicInput;
+
+
 
 }
 

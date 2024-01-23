@@ -2,8 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, HttpExce
 import { AcademicService } from './academic.service';
 import { CreateAcademicDto } from './dto/create-academic.dto';
 import { UpdateAcademicDto } from './dto/update-academic.dto';
+import { ApiTags } from '@nestjs/swagger';
 
-
+@ApiTags('Academic')
 @Controller('academic')
 export class AcademicController {
   constructor(private readonly academicService: AcademicService) { }
