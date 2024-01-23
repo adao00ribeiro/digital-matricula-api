@@ -71,7 +71,6 @@ export class CreateAcademicDto implements Omit<Academic, 'id' | 'createdAt' | 'u
     createdAt?: string | Date;
     updatedAt?: string | Date;
 
-
     @IsOptional()
     @IsArray()
     Document?: Prisma.DocumentUncheckedCreateNestedManyWithoutAcademicInput;
