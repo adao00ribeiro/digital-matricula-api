@@ -14,5 +14,4 @@ export class CourseService {
     return await this.prisma.course.findMany();
   }
 
-
 }
