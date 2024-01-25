@@ -18,7 +18,7 @@ model Academic {
   cep   String
 
   cpf       String     @unique()
-  birthdate DateTime
+  birthday String
   Document  Document[]
 
   createdAt DateTime @default(now())

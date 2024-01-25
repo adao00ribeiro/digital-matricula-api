@@ -19,6 +19,7 @@ async function bootstrap() {
     .addTag('Academic', 'Elevate your academic endeavors with comprehensive tools and resources.')
     .addTag('Enrolled Course', 'Elevate your academic endeavors with comprehensive tools and resources.')
     .addTag('Document Upload', 'Effortlessly upload and manage academic documents for a streamlined experience.')
+    .addTag('Matricula',"Matricula Descricao")
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

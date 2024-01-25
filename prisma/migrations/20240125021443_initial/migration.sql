@@ -8,7 +8,7 @@ CREATE TABLE "academics" (
     "state" TEXT,
     "cep" TEXT NOT NULL,
     "cpf" TEXT NOT NULL,
-    "birthdate" DATETIME NOT NULL,
+    "birthday" DATETIME NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL
 );
@@ -26,10 +26,10 @@ CREATE TABLE "courses" (
 -- CreateTable
 CREATE TABLE "enrolledcourse" (
     "id" TEXT NOT NULL PRIMARY KEY,
-    "academicId" TEXT,
-    "courseId" TEXT,
-    CONSTRAINT "enrolledcourse_academicId_fkey" FOREIGN KEY ("academicId") REFERENCES "academics" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
-    CONSTRAINT "enrolledcourse_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "courses" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+    "academicId" TEXT NOT NULL,
+    "courseId" TEXT NOT NULL,
+    CONSTRAINT "enrolledcourse_academicId_fkey" FOREIGN KEY ("academicId") REFERENCES "academics" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "enrolledcourse_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "courses" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable

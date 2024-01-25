@@ -7,9 +7,11 @@ import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './exception/http-exception.filter';
 import { CourseModule } from './course/course.module';
 import { EnrolledcourseModule } from './enrolledcourse/enrolledcourse.module';
+import { MatriculaModule } from './matricula/matricula.module';
+import { DocumentModule } from './document/document.module';
 
 @Module({
-  imports: [AcademicModule, PrismaModule, CourseModule, EnrolledcourseModule],
+  imports: [AcademicModule, PrismaModule, CourseModule, EnrolledcourseModule, MatriculaModule, DocumentModule],
   controllers: [AppController],
   providers: [AppService],
 })

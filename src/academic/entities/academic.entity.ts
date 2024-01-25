@@ -9,7 +9,7 @@ export class Academic implements Prisma.AcademicUncheckedCreateInput {
     state?: string;
     cep: string;
     cpf: string;
-    birthdate: string;
+    birthday: string;
 
     createdAt?: string | Date;
     updatedAt?: string | Date;

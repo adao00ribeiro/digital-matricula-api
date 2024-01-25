@@ -66,7 +66,7 @@ export class CreateAcademicDto implements Omit<Academic, 'id' | 'createdAt' | 'u
         example: "1990-01-01"
     })
     @IsString()
-    birthdate: string;
+    birthday: string ;
 
     createdAt?: string | Date;
     updatedAt?: string | Date;
