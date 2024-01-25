@@ -9,7 +9,6 @@ export class CourseService {
 
   constructor(private readonly prisma: PrismaService) { }
 
-
   async findAll() {
     return await this.prisma.course.findMany();
   }
