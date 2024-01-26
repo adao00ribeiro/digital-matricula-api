@@ -47,12 +47,21 @@ export class AcademicService {
   }
 
   async findAll() {
-    return await this.prisma.academic.findMany();
+    return await this.prisma.academic.findMany({
+      include: { Document: true, enrolledCourses: true }
+    });
   }
 
   async findOne(id: string) {
     return this.prisma.academic.findUnique({
-      where: { id }
+      where: { id },
+      include: {
+        enrolledCourses: {
+          include: { Course: true }
+        },
+
+        Document: true
+      }
     });
   }
   async findOneByEmail(email: string) {
