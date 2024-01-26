@@ -1,26 +1,77 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateDocumentDto } from './dto/create-document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class DocumentService {
-  create(createDocumentDto: CreateDocumentDto) {
-    return 'This action adds a new document';
+
+  constructor(private readonly prisma: PrismaService) { }
+
+  async create(createDocumentDto: CreateDocumentDto) {
+    const document = await this.prisma.document.create({
+      data: createDocumentDto
+    });
+    return document;
   }
 
-  findAll() {
-    return `This action returns all document`;
+  async findAll() {
+    const documents = await this.prisma.document.findMany();
+    return documents;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} document`;
+  async findOne(id: string) {
+    const document = await this.prisma.document.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    
+    if (!document) {
+      throw new NotFoundException(`Document with ID ${id} not found`);
+    }
+
+    return document;
   }
 
-  update(id: number, updateDocumentDto: UpdateDocumentDto) {
-    return `This action updates a #${id} document`;
+  async update(id: string, updateDocumentDto: UpdateDocumentDto) {
+    const existingDocument = await this.prisma.document.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!existingDocument) {
+      throw new NotFoundException(`Document with ID ${id} not found`);
+    }
+
+    const updatedDocument = await this.prisma.document.update({
+      where: {
+        id: id,
+      },
+      data: updateDocumentDto,
+    });
+
+    return updatedDocument;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} document`;
+  async remove(id: string) {
+    const existingDocument = await this.prisma.document.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!existingDocument) {
+      throw new HttpException(`Document with ID ${id} not found`,HttpStatus.BAD_REQUEST);
+    }
+
+    await this.prisma.document.delete({
+      where: {
+        id: id,
+      },
+    });
+
+    return `Document with ID ${id} has been deleted`;
   }
 }

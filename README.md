@@ -31,7 +31,14 @@
 ```bash
 $ pnpm install
 ```
-
+## prisma
+```bash
+$ npx prisma migrate dev --name InitialDb
+```
+## Seed
+```bash
+$ pnpm seed
+```
 ## Running the app
 
 ```bash

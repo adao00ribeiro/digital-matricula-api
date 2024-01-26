@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateMatriculaDto } from './dto/create-matricula.dto';
 import { UpdateMatriculaDto } from './dto/update-matricula.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -14,7 +14,7 @@ export class MatriculaService {
 
   constructor(private readonly prisma:PrismaService){}
  async create(createMatriculaDto: CreateMatriculaDto) {
-  console.log(createMatriculaDto)
+  
 
   const academic: Academic = {
     name: createMatriculaDto.name,
@@ -28,13 +28,46 @@ export class MatriculaService {
   };
  
   try {
-  const resultacademic =  await this.prisma.academic.create({
-      data:academic,
+
+    const academicExist =  await this.prisma.academic.findUnique({
+      where:{cpf: academic.cpf}
     })
+    let resultacademic = null;
+    if(academicExist){
+         resultacademic =  await this.prisma.academic.update({
+          where: { id : academicExist.id },
+          data:academic
+        })
+        if(!resultacademic){
+          throw new HttpException('Erro ao atualizar academico', HttpStatus.BAD_REQUEST);
+        }else{
+          console.log("fez o update")
+        }
+    }else{
+      resultacademic =  await this.prisma.academic.create({
+        data:academic,
+      })
+
+      if(!resultacademic){
+        throw new HttpException('Erro ao Criar Academico', HttpStatus.BAD_REQUEST);
+      }else{
+        console.log("crio novo academico")
+      }
+    }
+  
     const Enrolledcourse: Enrolledcourse = {
       academicId: resultacademic.id,
       courseId: createMatriculaDto.idcourse
     };
+
+    const resultAcademic = await this.prisma.enrolledCourse.findMany({
+      where: { academicId: academicExist.id },
+    });
+    resultAcademic.map(x =>{
+      if(x.courseId == createMatriculaDto.idcourse){
+        throw new HttpException('Voce ja se Matriculo nesse Curso', HttpStatus.BAD_REQUEST);
+      }
+    })
     // Inicia a transação
     await this.prisma.$transaction([
       this.prisma.enrolledCourse.create({
@@ -58,7 +91,7 @@ export class MatriculaService {
   } catch (error) {
     // Rollback em caso de falha na transação
     console.error('Erro durante a transação:', error);
-    return { success: false, message: 'Erro ao criar a matrícula.' };
+    return { success: false, message: error.message };
   }
   }
 
