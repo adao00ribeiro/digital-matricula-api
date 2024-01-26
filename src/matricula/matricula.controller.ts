@@ -1,20 +1,19 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Header, UseInterceptors, UploadedFiles, BadRequestException } from '@nestjs/common';
 import { MatriculaService } from './matricula.service';
 import { CreateMatriculaDto } from './dto/create-matricula.dto';
-import { UpdateMatriculaDto } from './dto/update-matricula.dto';
 import { ApiTags } from '@nestjs/swagger';
-import {  FilesInterceptor } from '@nestjs/platform-express';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 
 @ApiTags('Matricula')
 @Controller('matricula')
 export class MatriculaController {
-  constructor(private readonly matriculaService: MatriculaService) {}
-   
- 
+  constructor(private readonly matriculaService: MatriculaService) { }
+
+
   @Header('Content-Type', 'application/image')
-  @UseInterceptors(FilesInterceptor('files', 2,{
+  @UseInterceptors(FilesInterceptor('files', 2, {
     storage: diskStorage({
       destination: "./public/uploads",
       filename: (req, file, cb) => {
@@ -27,10 +26,8 @@ export class MatriculaController {
     })
   }))
   @Post()
- async create(@UploadedFiles() files: Express.Multer.File[], @Body() createMatriculaDto: CreateMatriculaDto) {
-
+  async create(@UploadedFiles() files: Express.Multer.File[], @Body() createMatriculaDto: CreateMatriculaDto) {
     const imagesUrls = files.map(file => `/public/uploads/${file.filename}`);
-  
     const matriculaDtoWithImages = {
       ...createMatriculaDto,
       imagesUrls: {
@@ -38,28 +35,6 @@ export class MatriculaController {
         imageVerso: imagesUrls[1],  // Assumindo que a segunda imagem é a imageVerso
       },
     };
-
-   
     return await this.matriculaService.create(matriculaDtoWithImages);
-  }
-
-  @Get()
-  findAll() {
-    return this.matriculaService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.matriculaService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMatriculaDto: UpdateMatriculaDto) {
-    return this.matriculaService.update(+id, updateMatriculaDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.matriculaService.remove(+id);
   }
 }
