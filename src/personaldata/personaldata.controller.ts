@@ -23,7 +23,10 @@ export class PersonaldataController {
   findOne(@Param('id') id: string) {
     return this.personaldataService.findOne(+id);
   }
-
+  @Get('cpf/:cpf')
+  async findOneByCpf(@Param('cpf') cpf: string) {
+    return this.personaldataService.findOneByCpf(cpf);
+  }
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePersonaldatumDto: UpdatePersonaldatumDto) {
     return this.personaldataService.update(+id, updatePersonaldatumDto);

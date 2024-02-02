@@ -4,6 +4,7 @@ import { UpdatePersonaldatumDto } from './dto/update-personaldatum.dto';
 
 @Injectable()
 export class PersonaldataService {
+
   create(createPersonaldatumDto: CreatePersonaldatumDto) {
     return 'This action adds a new personaldatum';
   }
@@ -15,7 +16,9 @@ export class PersonaldataService {
   findOne(id: number) {
     return `This action returns a #${id} personaldatum`;
   }
-
+  async findOneByCpf(cpf: string) {
+    throw new Error('Method not implemented.');
+  }
   update(id: number, updatePersonaldatumDto: UpdatePersonaldatumDto) {
     return `This action updates a #${id} personaldatum`;
   }
