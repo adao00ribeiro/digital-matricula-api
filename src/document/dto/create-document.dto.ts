@@ -9,8 +9,8 @@ export class CreateDocumentDto extends Document {
     })
     @IsString()
     @IsNotEmpty({ message: 'O Id do academico deve ser preenchido.' })
-    academicId: string;
-    
+    enrollmentId: string;
+
     @ApiProperty({
         description: "Url do documento",
         example: "/public/uploads/nome.png"

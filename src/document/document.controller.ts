@@ -2,10 +2,12 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpS
 import { DocumentService } from './document.service';
 import { CreateDocumentDto } from './dto/create-document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Document Upload')
 @Controller('document')
 export class DocumentController {
-  constructor(private readonly documentService: DocumentService) {}
+  constructor(private readonly documentService: DocumentService) { }
 
   @Post()
   async create(@Body() createDocumentDto: CreateDocumentDto) {

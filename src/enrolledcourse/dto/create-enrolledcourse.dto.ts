@@ -8,8 +8,8 @@ export class CreateEnrolledcourseDto extends Enrolledcourse {
         example: "15845465465"
     })
     @IsString()
-    @IsNotEmpty({ message: 'O id do academico deve ser preenchido.' })
-    academicId: string;
+    @IsNotEmpty({ message: 'O id da Inscrição deve ser preenchido.' })
+    enrollmentId: string;
 
     @ApiProperty({
         description: "Id do curso",

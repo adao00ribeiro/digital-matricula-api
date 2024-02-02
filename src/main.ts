@@ -16,10 +16,10 @@ async function bootstrap() {
     .setDescription('Empower your educational experience with the Digital Matricula API. Seamlessly manage courses, academic information, and more with this robust and user-friendly interface. Version 1.0 brings innovative features to enhance your academic journey.')
     .setVersion('1.0')
     .addTag('Course', 'Explore and manage courses effortlessly.')
-    .addTag('Academic', 'Elevate your academic endeavors with comprehensive tools and resources.')
+    .addTag('Enrollment', 'Elevate your academic endeavors with comprehensive tools and resources.')
     .addTag('Enrolled Course', 'Elevate your academic endeavors with comprehensive tools and resources.')
+    .addTag('Personal Data', "")
     .addTag('Document Upload', 'Effortlessly upload and manage academic documents for a streamlined experience.')
-    .addTag('Matricula',"Matricula Descricao")
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

@@ -46,16 +46,16 @@ model PersonalData {
   cep      String
   birthday String
 
-  Enrollment   Enrollment @relation(fields: [EnrollmentId], references: [id])
-  EnrollmentId String     @unique // relation scalar field (used in the `@relation` attribute above)
+  enrollment   Enrollment @relation(fields: [enrollmentId], references: [id])
+  enrollmentId String     @unique // relation scalar field (used in the `@relation` attribute above)
 
   @@map("personaldatas")
 }
 
 model EnrolledCourse {
   id           String     @id @default(uuid())
-  Enrollment   Enrollment @relation(fields: [EnrollmentId], references: [id])
-  EnrollmentId String
+  enrollment   Enrollment @relation(fields: [enrollmentId], references: [id])
+  enrollmentId String
   Course       Course     @relation(fields: [courseId], references: [id])
   courseId     String
 

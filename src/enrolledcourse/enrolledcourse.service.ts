@@ -14,13 +14,13 @@ export class EnrolledcourseService {
     const courseexist = await this.prisma.course.findUnique({
       where: { id: createEnrolledcourseDto.courseId }
     })
-    const academicexist = await this.prisma.academic.findUnique({
-      where: { id: createEnrolledcourseDto.academicId }
+    const enrolmentdata = await this.prisma.enrollment.findUnique({
+      where: { id: createEnrolledcourseDto.enrollmentId }
     })
     if (!courseexist) {
       throw new HttpException('Courso nao existe.', HttpStatus.BAD_REQUEST);
     }
-    if (!academicexist) {
+    if (!enrolmentdata) {
       throw new HttpException('academico nao existe.', HttpStatus.BAD_REQUEST);
     }
     return await this.prisma.enrolledCourse.create({
