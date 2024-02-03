@@ -10,30 +10,28 @@ export class PersonaldataController {
   constructor(private readonly personaldataService: PersonaldataService) { }
 
   @Post()
-  create(@Body() createPersonaldatumDto: CreatePersonaldatumDto) {
-    return this.personaldataService.create(createPersonaldatumDto);
+ async  create(@Body() createPersonaldatumDto: CreatePersonaldatumDto) {
+    return await this.personaldataService.create(createPersonaldatumDto);
   }
-
   @Get()
-  findAll() {
-    return this.personaldataService.findAll();
+  async findAll() {
+    return await this.personaldataService.findAll();
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.personaldataService.findOne(+id);
+  @Get(':cpf')
+  async findOne(@Param('cpf') cpf: string) {
+    return await this.personaldataService.findOne(cpf);
   }
   @Get('cpf/:cpf')
   async findOneByCpf(@Param('cpf') cpf: string) {
-    return this.personaldataService.findOneByCpf(cpf);
+    return await this.personaldataService.findOneByCpf(cpf);
   }
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePersonaldatumDto: UpdatePersonaldatumDto) {
-    return this.personaldataService.update(+id, updatePersonaldatumDto);
+  @Patch(':cpf')
+  async update(@Param('cpf') cpf: string, @Body() updatePersonaldatumDto: UpdatePersonaldatumDto) {
+    return await this.personaldataService.update(cpf, updatePersonaldatumDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.personaldataService.remove(+id);
+  @Delete(':cpf')
+  async remove(@Param('cpf') cpf: string) {
+    return await this.personaldataService.remove(cpf);
   }
 }
