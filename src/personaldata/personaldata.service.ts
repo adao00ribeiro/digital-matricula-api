@@ -11,11 +11,11 @@ export class PersonaldataService {
     const personaldata = await this.prismaService.personalData.findUnique({
       where: { cpf: createPersonaldatumDto.cpf }
     });
-    console.log(personaldata)
+   
     if (personaldata) {
       throw new HttpException("Cpf ja esta em uso", HttpStatus.BAD_REQUEST);
     }
-    console.log(createPersonaldatumDto)
+   
     return await this.prismaService.personalData.create({
       data: createPersonaldatumDto
     });

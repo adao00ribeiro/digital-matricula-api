@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
 import { PersonaldataService } from './personaldata.service';
 import { CreatePersonaldatumDto } from './dto/create-personaldatum.dto';
 import { UpdatePersonaldatumDto } from './dto/update-personaldatum.dto';
@@ -25,7 +25,7 @@ export class PersonaldataController {
   async findOneByCpf(@Param('cpf') cpf: string) {
     return await this.personaldataService.findOneByCpf(cpf);
   }
-  @Patch(':cpf')
+  @Put(':cpf')
   async update(@Param('cpf') cpf: string, @Body() updatePersonaldatumDto: UpdatePersonaldatumDto) {
     return await this.personaldataService.update(cpf, updatePersonaldatumDto);
   }
