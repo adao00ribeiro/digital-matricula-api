@@ -6,6 +6,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 @Injectable()
 export class DocumentService {
 
+
   constructor(private readonly prisma: PrismaService) { }
 
   async create(createDocumentDto: CreateDocumentDto) {
@@ -26,14 +27,26 @@ export class DocumentService {
         id: id,
       },
     });
-    
+
     if (!document) {
       throw new NotFoundException(`Document with ID ${id} not found`);
     }
 
     return document;
   }
+  async findOneByEnrrolmentId(id: string) {
+    const document = await this.prisma.document.findMany({
+      where: {
+        enrollmentId: id,
+      },
+    });
 
+    if (!document) {
+      throw new NotFoundException(`Document with ID ${id} not found`);
+    }
+
+    return document;
+  }
   async update(id: string, updateDocumentDto: UpdateDocumentDto) {
     const existingDocument = await this.prisma.document.findUnique({
       where: {
@@ -63,15 +76,13 @@ export class DocumentService {
     });
 
     if (!existingDocument) {
-      throw new HttpException(`Document with ID ${id} not found`,HttpStatus.BAD_REQUEST);
+      throw new HttpException(`Document with ID ${id} not found`, HttpStatus.BAD_REQUEST);
     }
 
-    await this.prisma.document.delete({
+    return await this.prisma.document.delete({
       where: {
         id: id,
       },
     });
-
-    return `Document with ID ${id} has been deleted`;
   }
 }

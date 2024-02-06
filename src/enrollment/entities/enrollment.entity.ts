@@ -5,11 +5,9 @@ export class Enrollment implements Prisma.EnrollmentUncheckedCreateInput {
     email: string;
     name: string;
     phone: string;
-
     createdAt?: string | Date;
     updatedAt?: string | Date;
-
     PersonalData?: Prisma.PersonalDataUncheckedCreateNestedOneWithoutEnrollmentInput;
-    Document?: Prisma.DocumentUncheckedCreateNestedManyWithoutEnrollmentInput;
+    Document?: Prisma.DocumentUncheckedCreateNestedOneWithoutEnrollmentInput;
     enrolledCourses?: Prisma.EnrolledCourseUncheckedCreateNestedManyWithoutEnrollmentInput;
 }

@@ -32,7 +32,7 @@ model Enrollment {
 
   PersonalData PersonalData?
 
-  Document Document[]
+  Document Document?
 
   enrolledCourses EnrolledCourse[]
 
@@ -63,10 +63,11 @@ model EnrolledCourse {
 }
 
 model Document {
-  id           String     @id @default(uuid())
-  documentUrl  String
-  enrollmentId String
-  enrollment   Enrollment @relation(fields: [enrollmentId], references: [id])
+  id               String     @id @default(uuid())
+  frontdocumentUrl String
+  backdocumentUrl  String
+  enrollmentId     String     @unique
+  enrollment       Enrollment @relation(fields: [enrollmentId], references: [id])
 
   @@map("documents")
 }

@@ -45,7 +45,8 @@ export class EnrolledcourseService {
     });
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: string) {
+
     await this.prisma.enrolledCourse.delete({
       where: { id },
     });

@@ -32,7 +32,15 @@ export class EnrollmentService {
   }
 
   async findAll() {
-    return `This action returns all enrollment`;
+    return await this.prismaservice.enrollment.findMany(
+      {
+        include: {
+          PersonalData: true,
+          Document: true,
+          enrolledCourses: true
+        }
+      }
+    );
   }
 
   async findOne(id: number) {
@@ -59,6 +67,17 @@ export class EnrollmentService {
   }
 
   async remove(id: string) {
-    return `This action removes a #${id} enrollment`;
+
+    const enrollment = await this.prismaservice.enrollment.findUnique({
+      where: { id: id }
+    });
+
+    if (!enrollment) {
+      throw new HttpException("nao encontrado", HttpStatus.NOT_FOUND);
+    }
+
+    return await this.prismaservice.enrollment.delete({
+      where: { id: id },
+    });
   }
 }
