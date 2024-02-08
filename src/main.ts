@@ -9,7 +9,7 @@ import * as path from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  //app.enableCors();
+  app.enableCors();
   app.useStaticAssets(path.join(__dirname, "../public/uploads"));
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(new ValidationPipe());

@@ -18,14 +18,26 @@ export class EnrolledcourseService {
       where: { id: createEnrolledcourseDto.enrollmentId }
     })
     if (!courseexist) {
-      throw new HttpException('Courso nao existe.', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Curso nao existe.', HttpStatus.BAD_REQUEST);
     }
     if (!enrolmentdata) {
-      throw new HttpException('academico nao existe.', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Academico nao existe.', HttpStatus.BAD_REQUEST);
     }
-    return await this.prisma.enrolledCourse.create({
-      data: createEnrolledcourseDto
-    })
+
+    const enrolledCourse = await this.prisma.enrolledCourse.findFirst({
+      where: {
+        courseId: createEnrolledcourseDto.courseId,
+        enrollmentId: createEnrolledcourseDto.enrollmentId
+      }
+    });
+
+    if (enrolledCourse) {
+      throw new HttpException("JA ESTA MATRICULADO NO CURSO", HttpStatus.ACCEPTED);
+    } else {
+      return await this.prisma.enrolledCourse.create({
+        data: createEnrolledcourseDto
+      })
+    }
   }
 
   async findAll(): Promise<Enrolledcourse[]> {
