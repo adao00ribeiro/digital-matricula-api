@@ -7,28 +7,6 @@ datasource db {
   url      = env("DATABASE_URL_SQLITE")
 }
 
-model Academic {
-  id    String @id @default(uuid())
-  name  String
-  email String @unique()
-  phone String
-
-  city  String?
-  state String?
-  cep   String
-
-  cpf      String     @unique()
-  birthday String
-  Document Document[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
-
-  enrolledCourses EnrolledCourse[]
-
-  @@map("academics")
-}
-
 model Course {
   id                   String           @id @default(uuid())
   name                 String
@@ -43,19 +21,53 @@ model Course {
   @@map("courses")
 }
 
-model EnrolledCourse {
-  id         String   @id @default(uuid())
-  Academic   Academic @relation(fields: [academicId], references: [id])
-  academicId String
-  Course     Course   @relation(fields: [courseId], references: [id])
-  courseId   String
+model Enrollment {
+  id    String @id @default(uuid())
+  email String @unique()
+  name  String
+  phone String @unique()
 
-  @@map("enrolledcourse")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  PersonalData PersonalData?
+
+  Document Document?
+
+  enrolledCourses EnrolledCourse[]
+
+  @@map("enrollments")
+}
+
+model PersonalData {
+  cpf      String  @id @unique()
+  city     String?
+  state    String?
+  cep      String
+  birthday String
+
+  enrollment   Enrollment @relation(fields: [enrollmentId], references: [id])
+  enrollmentId String     @unique // relation scalar field (used in the `@relation` attribute above)
+
+  @@map("personaldatas")
+}
+
+model EnrolledCourse {
+  id           String     @id @default(uuid())
+  enrollment   Enrollment @relation(fields: [enrollmentId], references: [id])
+  enrollmentId String
+  Course       Course     @relation(fields: [courseId], references: [id])
+  courseId     String
+
+  @@map("enrolledcourses")
 }
 
 model Document {
-  id          String   @id @default(uuid())
-  academicId  String
-  documentUrl String
-  academic    Academic @relation(fields: [academicId], references: [id])
+  id               String     @id @default(uuid())
+  frontdocumentUrl String
+  backdocumentUrl  String
+  enrollmentId     String     @unique
+  enrollment       Enrollment @relation(fields: [enrollmentId], references: [id])
+
+  @@map("documents")
 }

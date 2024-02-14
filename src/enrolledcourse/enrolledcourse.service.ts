@@ -14,18 +14,30 @@ export class EnrolledcourseService {
     const courseexist = await this.prisma.course.findUnique({
       where: { id: createEnrolledcourseDto.courseId }
     })
-    const academicexist = await this.prisma.academic.findUnique({
-      where: { id: createEnrolledcourseDto.academicId }
+    const enrolmentdata = await this.prisma.enrollment.findUnique({
+      where: { id: createEnrolledcourseDto.enrollmentId }
     })
     if (!courseexist) {
-      throw new HttpException('Courso nao existe.', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Curso nao existe.', HttpStatus.BAD_REQUEST);
     }
-    if (!academicexist) {
-      throw new HttpException('academico nao existe.', HttpStatus.BAD_REQUEST);
+    if (!enrolmentdata) {
+      throw new HttpException('Academico nao existe.', HttpStatus.BAD_REQUEST);
     }
-    return await this.prisma.enrolledCourse.create({
-      data: createEnrolledcourseDto
-    })
+
+    const enrolledCourse = await this.prisma.enrolledCourse.findFirst({
+      where: {
+        courseId: createEnrolledcourseDto.courseId,
+        enrollmentId: createEnrolledcourseDto.enrollmentId
+      }
+    });
+
+    if (enrolledCourse) {
+      throw new HttpException("JA ESTA MATRICULADO NO CURSO", HttpStatus.ACCEPTED);
+    } else {
+      return await this.prisma.enrolledCourse.create({
+        data: createEnrolledcourseDto
+      })
+    }
   }
 
   async findAll(): Promise<Enrolledcourse[]> {
@@ -45,7 +57,8 @@ export class EnrolledcourseService {
     });
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: string) {
+
     await this.prisma.enrolledCourse.delete({
       where: { id },
     });
